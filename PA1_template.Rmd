@@ -20,7 +20,7 @@ setwd("C:/Users/CarlosDaniel/SkyDrive/Documentos/Tec de Monterrey/zCoursera/5. R
 ## 1. Loading and preprocessing the data
 Now that we're in the correct directory, we load the data from the .zip file by using the unzip() function to unzip it, and then we use the read.csv() function to assign the data to the variable "data". Here's the code for the procedure:
 
-```{r, echo=TRUE,results='asis'}
+```{r, echo=TRUE,results='markup'}
 unzip("activity.zip")
 data <- read.csv("activity.csv")
 
@@ -29,7 +29,7 @@ head(data)
 
 We convert the data column from factor (which was by default) to character, and then to the date using its format.
 
-```{r, echo=TRUE, results='asis'}
+```{r, echo=TRUE, results='markup'}
 data$date <- as.character(data$date)
 data$date <- as.Date(data$date, format = "%Y-%m-%d")
 
@@ -41,7 +41,7 @@ For this part of the assessment, we ignore the missing values in the dataset.
 
 First, we calculate the total number of steps taken per day by grouping the data by the date column and applying the sum() function to get the total. All of this is done in a single line of code with the aggregate() function:
 
-```{r, echo=TRUE, results='asis'}
+```{r, echo=TRUE, results='markup'}
 res <- aggregate(data$steps ~ data$date, data, sum)
 names(res) <- c("date", "steps")
 
@@ -57,11 +57,11 @@ hist(res$steps, xlab = "Total amount of steps taken by day", main = "Distributio
 Now, we compute the mean and median of the data shown in the histogram with this code:
 
 ```{r, echo=TRUE}
-themean <- mean(res$steps)
+themean <- round(mean(res$steps))
 themedian <- median(res$steps)
 ```
 
-Therefore, the mean of the data is `r themean` and the median is `r themedian`.
+Therefore, the rounded mean of the data is `r themean` and the median is `r themedian`.
 
 ## 3. What is the average daily activity pattern?
 The next code makes a time series plot, of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis). For this, a new vector called resavg is needed, to get the average number of steps, instead of the totals, which are stored in the existent 'res' variable.
@@ -82,7 +82,7 @@ As you can see in the code, there's a horizontal line that points to where the a
 The 5-minute interval, on average across all the days in the dataset, that contains the maximum number of steps is in `r maxsteps`.
 
 ## 4. Imputing missing values
-As the presence of missing days may introduce bias into some calculations or summaries of the data, we calculate and report the total number of missing values in the initial dataset, which is `r narows`.
+As the presence of missing days may introduce bias into some calculations or summaries of the data, we calculate and report the total number of missing values in the initial dataset.
 
 ```{r echo=TRUE, results='asis'}
 narows <- nrow(data[is.na(data$steps), ])
@@ -128,7 +128,7 @@ Finally, we Make a panel plot containing a time series plot (i.e. type = "l") of
 For this, the dataset is separated by the 'dayofweek' column, into 'wddata' and 'wedata' (weekday and weekend, respectively). Then, for each the aggregate() function is used to get the average number of steps taken for each interval, and lastly the plots are made, as shown in this code:
 
 ```{r echo=TRUE, results='asis'}
-par(mfrow = c(2, 1))
+par(mfrow = c(1, 2))
 
 wddata <- nonas[nonas$dayofweek == "weekday", ]
 wedata <- nonas[nonas$dayofweek == "weekend", ]
